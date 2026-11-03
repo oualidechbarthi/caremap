@@ -1,0 +1,33 @@
+# Configuration de Ruff, l'outil qui vérifie (lint) et met en forme (format) le code Python.
+# Commandes : ruff check backend/   et   ruff format backend/
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [
+    ".git",
+    "venv",
+    ".venv",
+    "__pycache__",
+    "node_modules",
+    "dist"
+]
+
+# Familles de règles vérifiées
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+]
+ignore = [
+    "B008",  # do not perform function calls in argument defaults (standard in FastAPI)
+    "E501",  # line too long (handled by formatter)
+]
+
+# Mise en forme : guillemets doubles, indentation par espaces
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

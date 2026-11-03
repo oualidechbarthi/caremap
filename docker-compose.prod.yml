@@ -1,0 +1,45 @@
+# Déploiement public : Caddy (HTTPS automatique) → nginx (frontend) → FastAPI (backend)
+# Lancement sur le serveur :  docker compose -f docker-compose.prod.yml up -d --build
+# Le nom de domaine se règle dans le fichier .env (voir .env.example et DEPLOY.md).
+
+services:
+  backend:
+    build: ./backend
+    container_name: caremap-backend
+    restart: unless-stopped
+    volumes:
+      # Base SQLite et caches (rues, transports) conservés entre deux mises à jour
+      - ./backend/data:/app/data
+
+  frontend:
+    build: ./frontend
+    container_name: caremap-frontend
+    restart: unless-stopped
+    # Aucun port publié : seul Caddy est joignable depuis Internet
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  # Caddy : le seul conteneur exposé à Internet (ports 80 et 443), il gère le HTTPS
+  caddy:
+    image: caddy:2-alpine
+    container_name: caremap-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?Renseignez DOMAIN dans le fichier .env (voir DEPLOY.md)}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      # Certificats HTTPS : à garder, sinon Let's Encrypt est redemandé à chaque redémarrage
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+
+# Volumes nommés gérés par Docker (persistants)
+volumes:
+  caddy_data:
+  caddy_config:

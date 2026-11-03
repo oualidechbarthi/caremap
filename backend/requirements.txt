@@ -1,0 +1,10 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+osmnx==1.9.4
+geopandas==0.14.4
+shapely==2.0.6
+networkx==3.3
+geojson==3.1.0
+requests==2.32.3
+h3>=4,<5
+pyogrio>=0.7.2

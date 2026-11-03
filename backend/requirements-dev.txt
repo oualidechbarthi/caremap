@@ -1,0 +1,3 @@
+# Outils de développement (pas nécessaires dans l'image Docker)
+-r requirements.txt
+ruff>=0.4.0

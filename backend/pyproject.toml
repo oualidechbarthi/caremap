@@ -1,0 +1,29 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [
+    ".git",
+    "venv",
+    ".venv",
+    "__pycache__",
+    "node_modules",
+    "dist"
+]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+]
+ignore = [
+    "B008",  # do not perform function calls in argument defaults
+    "E501",  # line too long
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

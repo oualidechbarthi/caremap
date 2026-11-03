@@ -1,0 +1,7 @@
+# Caddy obtient et renouvelle seul le certificat HTTPS (Let's Encrypt) pour {$DOMAIN}.
+{$DOMAIN} {
+	# Compression des réponses
+	encode zstd gzip
+	# Transmet toutes les requêtes au conteneur frontend (nginx)
+	reverse_proxy frontend:80
+}
